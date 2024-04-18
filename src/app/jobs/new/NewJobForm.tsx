@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { draftToMarkdown } from 'markdown-draft-js';
 import React from 'react'
 import { useForm } from 'react-hook-form';
+import { createJobPosting } from './actions';
 
 function NewJobForm() {
 
@@ -32,9 +33,19 @@ function NewJobForm() {
   } = form
 
   async function onSubmit(values: createJobValues) {
-    console.log('====================================');
-    console.log(values);
-    console.log('====================================');
+    const formdata = new FormData();
+
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) {
+        formdata.append(key, value);
+      }
+    })
+
+    try {
+     await createJobPosting(formdata)
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

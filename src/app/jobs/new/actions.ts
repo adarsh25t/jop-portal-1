@@ -5,12 +5,16 @@ import { createJobSchema } from "@/lib/validations";
 import {nanoid} from "nanoid"
 import {put} from "@vercel/blob";
 import path from "path";
+import { connectToDB } from "@/lib/DB";
+import { Job } from "../../../../models/Job";
+import { redirect } from "next/navigation";
+
 
 export async function createJobPosting(formData: FormData) {
 
     const values = Object.fromEntries(formData.entries());
-
-    const { 
+    connectToDB()
+    let { 
         title,
         type,
         companyName,
@@ -38,4 +42,26 @@ export async function createJobPosting(formData: FormData) {
         );
         companyLogoUrlBlobId = blob.url;
     }
+
+    if (applicationUrl == undefined) {
+        applicationUrl = ""
+    }
+
+    await Job.create({
+        title,
+        slug,
+        type,
+        companyName,
+        companyLogoUrl: companyLogoUrlBlobId,
+        locationType,
+        location,
+        applicationEmail,
+        applicationUrl,
+        description,
+        salary,
+        updatedAt: new Date(),
+        createdAt: new Date(),
+    });
+
+    redirect("/job-submitted")
 }
