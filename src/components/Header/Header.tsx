@@ -6,13 +6,17 @@ import Link from 'next/link'
 function Header() {
     return (
         <div>
-            <div className="flex justify-between items-end">
-                <Image
-                    src={'/image/logo.png'}
-                    width={40}
-                    height={40}
-                    alt="logo"
-                />
+            <div className="m-auto flex max-w-5xl items-center justify-between px-3 py-5">
+                <Link 
+                    href={'/'}
+                >
+                    <Image
+                        src={'/image/logo.png'}
+                        width={40}
+                        height={40}
+                        alt="logo"
+                    />
+                </Link>
                 <div className="">
                     <Button asChild>
                         <Link href={'/jobs/new'}>Post a Job</Link>
